@@ -1,0 +1,7 @@
+{
+    "nim.buildOnSave": false,
+    "nim.buildCommand": "c",
+    "nim.lintOnSave": true,
+    "nim.project": ["usage.nim", "module.nim"],
+    "nim.licenseString": "# Copyright 2020.\n\n"
+}
