@@ -1,27 +1,47 @@
 import std/paths
 from std/dirs import createDir, dirExists, removeDir
+from std/files import fileExists, removeFile
 import ../commonFs/commonFs
 
 type
-  OsFs* {.final.} = ref object of FileSystem
+  OsFs {.final.} = ref object of FileSystem
 
-proc new*(_: typedesc[OsFs]): FileSystem =
-  result = system.new(OsFs)
+proc newOsFs*(): FileSystem =
+  result = new(OsFs)
 
-method createDir*(self: OsFs, path: Path) =
+method createDirImpl(self: OsFs, absolutePath: Path) =
   try:
-    createDir(path)
-  except OSError:
-    raise newException(FileSystemError, "Cannot create directory")
-  except IOError:
-    raise newException(FileSystemError, "Cannot create directory")
+    createDir(absolutePath)
+  except OSError as e:
+    raise newException(FileSystemError, e.msg, e)
+  except IOError as e:
+    raise newException(FileSystemError, e.msg, e)
 
-method dirExists*(self: OsFs, path: Path): bool =
-  return dirExists(path)
+method dirExistsImpl(self: OsFs, absolutePath: Path): bool =
+  return dirExists(absolutePath)
 
-method removeDir*(self: OsFs, path: Path) =
+method removeDirImpl(self: OsFs, absolutePath: Path) =
   try:
-    removeDir(path)
-  except OSError:
-    raise newException(FileSystemError, "Cannot delete directory")
-  
+    removeDir(absolutePath)
+  except OSError as e:
+    raise newException(FileSystemError, e.msg, e)
+
+method createFileImpl(self: OsFs, absolutePath: Path): commonFs.File =
+  try:
+    open(absolutePath.string, fmWrite).close()
+    return self.getFileHandle(absolutePath)
+  except ValueError as e:
+    raise newException(InvalidPathError, "couldn't create file handle due to invalid path: " & e.msg, e)
+  except OSError as e:
+    raise newException(FileSystemError, e.msg, e)
+  except IOError as e:
+    raise newException(FileSystemError, e.msg, e)
+
+method fileExistsImpl(self: OsFs, absolutePath: Path): bool =
+  return fileExists(absolutePath)
+
+method removeFileImpl(self: OsFs, absolutePath: Path) =
+  try:
+    removeFile(absolutePath)
+  except OSError as e:
+    raise newException(FileSystemError, e.msg, e)

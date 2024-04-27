@@ -3,15 +3,26 @@ import commonFs/commonFs
 import osFs/osFs
 # import inMemoryFs/inMemoryFs
 
-let path = "/home/xkonti/test-directory".Path
+let dirPath = "/home/xkonti/test-directory".Path
 
-var fs = new OsFs
+var fs = newOsFs()
 # var fs = newInMemoryFS()
 
-if fs.dirExists(path):
+if fs.dirExists(dirPath):
   echo "Directory already exists: deleting..."
-  fs.removeDir(path)
+  fs.removeDir(dirPath)
   echo "Directory deleted"
 else:
-  fs.createDir(path)
+  fs.createDir(dirPath)
   echo "Directory created"
+
+let filePath = "/home/xkonti/test-directory/test-file.txt".Path
+
+if fs.fileExists(filePath):
+  echo "File exists"
+  fs.removeFile(filePath)
+  echo "File deleted"
+else:
+  let file = fs.createFile(filePath)
+  echo "File created"
+  echo "The created file exists: ", file.exists
