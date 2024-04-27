@@ -1,11 +1,4 @@
 nimcache/
 nimblecache/
 htmldocs/
-
-# Ignore all files without an extension
-# This is to avoid adding build artifacts
-*
-!*/
-!.*
-!*.*
-!LICENSE
+bin/

@@ -3,5 +3,9 @@
     "nim.buildCommand": "c",
     "nim.lintOnSave": true,
     "nim.project": ["usage.nim", "module.nim"],
-    "nim.licenseString": "# Copyright 2020.\n\n"
+    "nim.licenseString": "# MIT Licence\n\n# Copyright (c) 2024 by Beniamin Dudek aka Xkonti\n\n",
+
+    "code-runner.executorMap": {
+        "nim": "nim compile -o:bin/ --verbosity:0 --hints:off --run",
+    },
 }

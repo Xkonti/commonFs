@@ -5,7 +5,7 @@ import osFs/osFs
 
 let path = "/home/xkonti/test-directory".Path
 
-var fs = new(OsFs)
+var fs = new OsFs
 # var fs = newInMemoryFS()
 
 if fs.dirExists(path):
