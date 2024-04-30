@@ -28,6 +28,19 @@
                 "kind": "build",
                 "isDefault": true
             }
+        },
+        {
+            "label": "nim: run tests",
+            "command": "nim",
+            "args": ["c", "-o:bin/test", "-r", "tests/test.nim", "*::"],
+            "options": {
+                "cwd": "${workspaceRoot}"
+            },
+            "type": "shell",
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            }
         }
     ]
 }

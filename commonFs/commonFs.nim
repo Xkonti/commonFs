@@ -80,7 +80,7 @@ proc getFileHandle*(self: FileSystem, path: Path): File = ## \
 method createFileImpl(self: FileSystem, absolutePath: Path): File {.base, raises: [LibraryError, FileSystemError, InvalidPathError].} =
   raise newException(LibraryError, "Method createFile hasn't been implemented!")
 
-proc createFile*(self: FileSystem, path: Path): File = ## \
+proc createFile*(self: FileSystem, path: Path): File {.discardable.} = ## \
   ## Creates an empty file at the specified path. It does not raise an error if the file already exists.
   ## If the directory in which the file should be created does not exist, it raises the FileSystemError.
   ## If succeeeded, it returns a File object for the created file.
