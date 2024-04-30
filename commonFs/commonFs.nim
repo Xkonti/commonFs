@@ -2,7 +2,7 @@ import std/paths
 
 type
   FileSystem* = ref object of RootObj
-    currentAbsoluteDir: Path
+    currentAbsoluteDir: Path = "/".Path
   
   File* = ref object of RootObj
     fs: FileSystem
@@ -50,7 +50,6 @@ proc createDir*(self: FileSystem, path: Path) = ## \
   ## Creates a directory at the specified path. It does not raise an error if the directory already exists.
   let absolutePath = self.getAbsolutePathTo(path)
   self.createDirImpl(absolutePath)
-
 
 method dirExistsImpl(self: FileSystem, absolutePath: Path): bool {.base, raises: [LibraryError, FileSystemError].} =
   raise newException(LibraryError, "Method dirExists hasn't been implemented!")
