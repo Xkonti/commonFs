@@ -1,15 +1,10 @@
 # MIT Licence
-
-# Copyright (c) 2024 by Beniamin Dudek aka Xkonti
-
-# MIT Licence
-
 # Copyright (c) 2024 by Beniamin Dudek aka Xkonti
 
 import std/unittest
 import std/paths
 import std/dirs
-from ../../commonFs/commonFs import FileSystem, createDir, setCurrentDir, dirExists
+import ../../commonFs/commonFs
 from ../../osFs/osFs import newOsFs
 
 suite "OsFs.createDir":
@@ -32,7 +27,7 @@ suite "OsFs.createDir":
   test "should create a directory using a relative path":
     let dirRelative = "testDir2".Path
     let dirAbsolute = testDirPath / dirRelative
-    fs.setCurrentDir(testDirPath)
+    fs.currentDir = testDirPath
     fs.createDir(dirRelative)
     check(fs.dirExists(dirAbsolute))
 
