@@ -21,7 +21,7 @@ type
   FILESYSTEM: CURRENT DIRECTORY OPERATIONS
 ]#
 
-proc currentDir*(self: FileSystem): Path = ## \
+func currentDir*(self: FileSystem): Path = ## \
   ## Returns the current "working" directory. The working directory is always an absolute path.
   return self.currentAbsoluteDir
 
@@ -32,7 +32,7 @@ proc `currentDir=`*(self: FileSystem, path: Path) = ## \
   except ValueError as e:
       raise newException(InvalidPathError, e.msg, e)
 
-proc getAbsolutePathTo*(self: FileSystem, path: Path): Path {.raises: [InvalidPathError].} = ## \
+func getAbsolutePathTo*(self: FileSystem, path: Path): Path {.raises: [InvalidPathError].} = ## \
   ## Returns the absolute path to the provided path. If the provided path is already absolute, it is returned as is.
   try:
     return path.absolutePath(self.currentDir)
@@ -71,7 +71,7 @@ proc removeDir*(self: FileSystem, path: Path) = ## \
   FILESYSTEM: FILE OPERATIONS
 ]#
 
-proc getFileHandle*(self: FileSystem, path: Path): File = ## \
+func getFileHandle*(self: FileSystem, path: Path): File = ## \
   ## Returns a File object for the file at the specified path, even if such file does not exist.
   let absolutePath = path.absolutePath(self.currentDir)
   result = File(fs: self, absolutePath: absolutePath)
