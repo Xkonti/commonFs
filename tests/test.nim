@@ -5,3 +5,4 @@
 include currentDir/currentDirTests
 include directories/createDirectoryTests
 include directories/dirExistsTests
+include directories/removeDirTests
