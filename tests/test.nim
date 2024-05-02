@@ -8,3 +8,4 @@ include directories/dirExistsTests
 include directories/removeDirTests
 
 include files/fileHandleTests
+include files/createFileTests
