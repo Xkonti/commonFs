@@ -111,10 +111,34 @@ proc removeFile*(self: FileSystem, path: Path) = ## \
   FILE: OPERATIONS
 ]#
 
-proc exists*(self: File): bool = ## \
+proc fs*(self: File): FileSystem {.inline.} = ## \
+  ## Returns the FileSystem object the file handle belongs to.
+  return self.fs
+
+proc absolutePath*(self: File): Path {.inline.} = ## \
+  ## Returns the absolute path the provided file handle points to.
+  return self.absolutePath
+
+proc name*(self: File): string {.inline.} = ## \
+  ## Returns the name of the file excluding the extension.
+  let (_, name, _) = self.absolutePath.splitFile()
+  return name.string
+
+proc ext*(self: File): string {.inline.} = ## \
+  ## Returns the extension of the file (withouth dot).
+  let (_, _, ext) = self.absolutePath.splitFile()
+  return ext
+
+proc filename*(self: File): string {.inline.} = ## \
+  ## Returns the name of the file including the extension.
+  
+  let (_, name, ext) = self.absolutePath.splitFile()
+  return name.string & ext
+
+proc exists*(self: File): bool {.inline.} = ## \
   ## Returns true if the file exists. If the path points to a directory, it returns false.
   return self.fs.fileExists(self.absolutePath)
 
-proc remove*(self: File) = ## \
+proc remove*(self: File) {.inline.} = ## \
   ## Removes the file. It does not raise an error if the file does not exist.
   self.fs.removeFile(self.absolutePath)
