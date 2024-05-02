@@ -9,3 +9,4 @@ include directories/removeDirTests
 
 include files/fileHandleTests
 include files/createFileTests
+include files/fileExistsTests
