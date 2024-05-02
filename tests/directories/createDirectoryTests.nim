@@ -1,6 +1,3 @@
-# MIT Licence
-# Copyright (c) 2024 by Beniamin Dudek aka Xkonti
-
 import std/unittest
 import std/paths
 import std/dirs
