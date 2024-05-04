@@ -1,11 +1,10 @@
 # MIT Licence
-
 # Copyright (c) 2024 by Beniamin Dudek aka Xkonti
 
 import std/unittest
 import std/paths
 
-import ../../commonFs/commonFs
+import commonFs
 
 suite "CommonFs.currentDir":
   var fs: FileSystem

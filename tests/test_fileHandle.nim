@@ -1,7 +1,7 @@
 import std/unittest
 import std/paths
 import std/dirs
-import ../../commonFs/commonFs
+import commonFs
 
 suite "CommonFs.getFileHandle":
   var fs: FileSystem
