@@ -5,7 +5,7 @@
     "nim.buildOnSave": false,
     "nim.buildCommand": "c",
     "nim.lintOnSave": true,
-    "nim.project": ["usage.nim", "src/commonFs.nim"],
+    "nim.project": ["src/commonFs.nim"],
 
     "code-runner.executorMap": {
         "nim": "nim compile -o:bin/ --verbosity:0 --hints:off --run",
