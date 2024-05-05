@@ -23,10 +23,10 @@ CommonFs is a file system abstraction for Nim that allows implementing interchan
     - [ ] `proc files: seq[File]`
     - [ ] `proc dirs: seq[Dir]`
     - [ ] `proc parent: Dir`
-    - [ ] `proc absolutePath: string`
-    - [ ] `proc name: string`
-    - [ ] `proc exists: bool`
-    - [ ] `proc remove`
+    - [x] `proc absolutePath: string`
+    - [x] `proc name: string`
+    - [x] `proc exists: bool`
+    - [x] `proc remove`
     - [ ] `iterator walk`
     - [ ] `iterator walkRec`
 

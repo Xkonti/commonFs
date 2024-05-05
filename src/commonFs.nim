@@ -3,6 +3,10 @@ import std/paths
 type
   FileSystem* = ref object of RootObj
     currentAbsoluteDir: Path = "/".Path
+
+  Dir* = ref object of RootObj
+    fs: FileSystem
+    absolutePath: Path
   
   File* = ref object of RootObj
     fs: FileSystem
@@ -42,6 +46,11 @@ func getAbsolutePathTo*(self: FileSystem, path: Path): Path {.raises: [InvalidPa
 #[
   FILESYSTEM: DIRECTORY OPERATIONS
 ]#
+
+func getDirHandle*(self: FileSystem, path: Path): Dir = ## \
+  ## Returns a Dir object for the directory at the specified path, even if such directory does not exist.
+  let absolutePath = path.absolutePath(self.currentDir)
+  result = Dir(fs: self, absolutePath: absolutePath)
 
 method createDirImpl(self: FileSystem, absolutePath: Path) {.base, raises: [LibraryError, FileSystemError].} =
   raise newException(LibraryError, "Method createDir hasn't been implemented!")
@@ -103,21 +112,40 @@ proc removeFile*(self: FileSystem, path: Path) = ## \
   self.removeFileImpl(absolutePath)
 
 
+#[
+  DIR / FILE: SHARED OPERATIONS
+]#
 
+proc fs*(self: Dir | File): FileSystem {.inline.} = ## \
+  ## Returns the FileSystem object the directory handle belongs to.
+  return self.fs
 
+proc absolutePath*(self: Dir | File): Path {.inline.} = ## \
+  ## Returns the absolute path the provided file handle points to.
+  return self.absolutePath
 
+#[
+  DIR: OPERATIONS
+]#
+
+proc name*(self: Dir): string {.inline.} = ## \
+  ## Returns the name of the directory.
+  let path = self.absolutePath
+  if path.isRootDir:
+    return "/"
+  return path.lastPathPart.string
+
+proc exists*(self: Dir): bool {.inline.} = ## \
+  ## Returns true if the directory exists. If the path points to a file, it returns false.
+  return self.fs.dirExists(self.absolutePath)
+
+proc remove*(self: Dir) {.inline.} = ## \
+  ## Removes the directory. It does not raise an error if the directory does not exist.
+  self.fs.removeDir(self.absolutePath)
 
 #[
   FILE: OPERATIONS
 ]#
-
-proc fs*(self: File): FileSystem {.inline.} = ## \
-  ## Returns the FileSystem object the file handle belongs to.
-  return self.fs
-
-proc absolutePath*(self: File): Path {.inline.} = ## \
-  ## Returns the absolute path the provided file handle points to.
-  return self.absolutePath
 
 proc name*(self: File): string {.inline.} = ## \
   ## Returns the name of the file excluding the extension.
