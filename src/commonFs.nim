@@ -52,13 +52,15 @@ func getDirHandle*(self: FileSystem, path: Path): Dir = ## \
   let absolutePath = path.absolutePath(self.currentDir)
   result = Dir(fs: self, absolutePath: absolutePath)
 
-method createDirImpl(self: FileSystem, absolutePath: Path) {.base, raises: [LibraryError, FileSystemError].} =
+method createDirImpl(self: FileSystem, absolutePath: Path): Dir {.base, raises: [LibraryError, FileSystemError, InvalidPathError].} =
   raise newException(LibraryError, "Method createDir hasn't been implemented!")
 
-proc createDir*(self: FileSystem, path: Path) = ## \
+proc createDir*(self: FileSystem, path: Path): Dir {.discardable.} = ## \
   ## Creates a directory at the specified path. It does not raise an error if the directory already exists.
+  ## If there is a file with the same name, it raises the ???Error.
+  ## If succeeeded, it returns a File handle for the created file.
   let absolutePath = self.getAbsolutePathTo(path)
-  self.createDirImpl(absolutePath)
+  return self.createDirImpl(absolutePath)
 
 method dirExistsImpl(self: FileSystem, absolutePath: Path): bool {.base, raises: [LibraryError, FileSystemError].} =
   raise newException(LibraryError, "Method dirExists hasn't been implemented!")
@@ -91,7 +93,7 @@ method createFileImpl(self: FileSystem, absolutePath: Path): File {.base, raises
 proc createFile*(self: FileSystem, path: Path): File {.discardable.} = ## \
   ## Creates an empty file at the specified path. It does not raise an error if the file already exists.
   ## If the directory in which the file should be created does not exist, it raises the FileSystemError.
-  ## If succeeeded, it returns a File object for the created file.
+  ## If succeeeded, it returns a File handle for the created file.
   let absolutePath = self.getAbsolutePathTo(path)
   return self.createFileImpl(absolutePath)
 
