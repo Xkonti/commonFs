@@ -12,10 +12,10 @@ requires "nim >= 2.0.2"
 
 # Tasks
 
-task dev_install, "Reinstall the package locally":
-  exec r"nimble dev_uninstall"
-  exec r"nimble install"
-
 task dev_uninstall, "Uninstall the package locally":
   try: exec r"nimble uninstall -i -y --silent commonFs"
   except: discard
+
+task dev_install, "Reinstall the package locally":
+  dev_uninstall_task()
+  exec r"nimble install"
