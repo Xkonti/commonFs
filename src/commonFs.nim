@@ -119,11 +119,11 @@ proc removeFile*(self: FileSystem, path: Path) = ## \
 ]#
 
 proc fs*(self: Dir | File): FileSystem {.inline.} = ## \
-  ## Returns the FileSystem object the directory handle belongs to.
+  ## Returns the FileSystem object the handle belongs to.
   return self.fs
 
 proc absolutePath*(self: Dir | File): Path {.inline.} = ## \
-  ## Returns the absolute path the provided file handle points to.
+  ## Returns the absolute path the provided handle points to.
   return self.absolutePath
 
 #[
