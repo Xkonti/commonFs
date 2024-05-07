@@ -113,6 +113,15 @@ proc removeFile*(self: FileSystem, path: Path) = ## \
   let absolutePath = self.getAbsolutePathTo(path)
   self.removeFileImpl(absolutePath)
 
+method readAllImpl(self: FileSystem, absolutePath: Path): string {.base, raises: [LibraryError, FileSystemError].} =
+  raise newException(LibraryError, "Method readAll hasn't been implemented!")
+
+proc readAll*(self: FileSystem, path: Path): string = ## \
+  ## Reads the content of the file at the specified path and returns it as a string.
+  ## If the file does not exist, it raises the FileSystemError.
+  let absolutePath = self.getAbsolutePathTo(path)
+  self.readAllImpl(absolutePath)
+
 
 #[
   DIR / FILE: SHARED OPERATIONS
@@ -172,3 +181,8 @@ proc exists*(self: File): bool {.inline.} = ## \
 proc remove*(self: File) {.inline.} = ## \
   ## Removes the file. It does not raise an error if the file does not exist.
   self.fs.removeFile(self.absolutePath)
+
+proc readAll*(self: File): string = ## \
+  ## Reads the content of the file and returns it as a string.
+  ## If the file does not exist, it raises the FileSystemError.
+  self.fs.readAll(self.absolutePath)

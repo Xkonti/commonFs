@@ -58,7 +58,7 @@ CommonFs is a file system abstraction for Nim that allows implementing interchan
     - [ ] `proc lastModificationTime: Time`
     - [ ] `proc lastAccessTime: Time`
     - [ ] `proc creationTime: Time`
-    - [ ] `proc readAll: string`
+    - [x] `proc readAll: string`
     - [ ] `proc readBytes: int` takes an `openArray[byte]`
     - [ ] `proc write` takes a varargs of strings (like `echo`)
     - [ ] `proc writeBytes` takes an `openArray[byte]`
