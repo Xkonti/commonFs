@@ -1,4 +1,5 @@
 import std/paths
+import std/options
 
 type
   FileSystem* = ref object of RootObj
@@ -142,6 +143,12 @@ proc fs*(self: Dir | File): FileSystem {.inline.} = ## \
 proc absolutePath*(self: Dir | File): Path {.inline.} = ## \
   ## Returns the absolute path the provided handle points to.
   return self.absolutePath
+
+proc parent*(self: Dir | File): Option[Dir] =
+  let path = self.absolutePath
+  if path.isRootDir:
+    return none Dir
+  return some self.fs.getDirHandle path.parentDir
 
 #[
   DIR: OPERATIONS

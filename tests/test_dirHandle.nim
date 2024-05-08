@@ -2,6 +2,7 @@ import std/unittest
 import std/paths
 import std/dirs
 import commonFs
+import std/options
 
 suite "CommonFs.getDirHandle":
   var fs: FileSystem
@@ -14,7 +15,7 @@ suite "CommonFs.getDirHandle":
 
   test "should return a dir handle with correct FS and path given absolute path":
     var path = "/tmp/test".Path
-    var handle = fs.getDirHandle(path)
+    var handle = fs.getDirHandle path
     
     check handle.absolutePath == path
     check handle.fs == fs
@@ -24,8 +25,8 @@ suite "CommonFs.getDirHandle":
     var relativeDirPath = "tests".Path
     var absoluteDirPath = rootPath / relativeDirPath
     fs.currentDir = rootPath
-    var handle = fs.getDirHandle(relativeDirPath)
-    check handle.absolutePath == fs.getAbsolutePathTo(relativeDirPath)
+    var handle = fs.getDirHandle relativeDirPath
+    check handle.absolutePath == fs.getAbsolutePathTo relativeDirPath
     check handle.fs == fs
 
 suite "CommonFs.Dir - Path helpers":
@@ -38,21 +39,37 @@ suite "CommonFs.Dir - Path helpers":
     discard
   
   test "name should return the name of the directory":
-    var path1 = "/tmp/somewhere/somefile".Path
-    var handle1 = fs.getDirHandle(path1)
-    check handle1.name == "somefile"
+    const testCases = [
+      ("/tmp/somewhere/there", "there"),
+      ("/home/user/manifesto.pdf", "manifesto.pdf"),
+      ("/dev/projects/secret/.gitignore", ".gitignore"),
+      ("/some/other/path/", "path")
+    ]
 
-    # A directory can be named like a file
-    var path2 = "/home/user/manifesto.pdf".Path
-    var handle2 = fs.getDirHandle(path2)
-    check handle2.name == "manifesto.pdf"
+    for testCase in testCases:
+      let path = testCase[0].Path
+      let name = testCase[1]
+      let handle = fs.getDirHandle path
+      check handle.name == name
 
-    # Hidden directories should be listed as well
-    var path3 = "/home/user/.gitignore".Path
-    var handle3 = fs.getDirHandle(path3)
-    check handle3.name == ".gitignore"
+  test "parent should return the parent directory":
+    const testCases = [
+      ("/tmp/somewhere/there", "/tmp/somewhere"),
+      ("/home/user/manifesto.pdf", "/home/user"),
+      ("/dev/projects/secret/.gitignore", "/dev/projects/secret"),
+      ("/some/other/path/", "/some/other")
+    ]
 
-    # A trailing slash should be ignored
-    var path4 = "/some/other/path/".Path
-    var handle4 = fs.getDirHandle(path4)
-    check handle4.name == "path"
+    for testCase in testCases:
+      let path = testCase[0].Path
+      let parentPath = testCase[1].Path
+      let handle = fs.getDirHandle path
+      let parentOpt = handle.parent
+      check parentOpt.isSome
+      check parentOpt.get.absolutePath == parentPath
+
+  test "parent should return None for root directory":
+    let path = "/".Path
+    let handle = fs.getDirHandle path
+    let parentOpt = handle.parent
+    check parentOpt.isNone

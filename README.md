@@ -22,7 +22,7 @@ CommonFs is a file system abstraction for Nim that allows implementing interchan
 - [ ] `Dir` type
     - [ ] `proc files: seq[File]`
     - [ ] `proc dirs: seq[Dir]`
-    - [ ] `proc parent: Dir`
+    - [x] `proc parent: Dir`
     - [x] `proc absolutePath: string`
     - [x] `proc name: string`
     - [x] `proc exists: bool`
@@ -47,7 +47,7 @@ CommonFs is a file system abstraction for Nim that allows implementing interchan
 - [ ] `proc writeBytes` takes an `openArray[byte]`
 
 - [ ] `File` type
-    - [ ] `proc parent: Dir`
+    - [x] `proc parent: Dir`
     - [x] `proc absolutePath: string`
     - [x] `proc name: string`
     - [x] `proc ext: string`
@@ -65,6 +65,8 @@ CommonFs is a file system abstraction for Nim that allows implementing interchan
 
 ## To be implemented a bit later
 
+- [ ] make everything async
+- [ ] cursors for reading and writing files
 - [ ] `proc moveDir`
 - [ ] `proc copyDir`
 - [ ] `proc moveFile`

@@ -2,6 +2,7 @@ import std/unittest
 import std/paths
 import std/dirs
 import commonFs
+import std/options
 
 suite "CommonFs.getFileHandle":
   var fs: FileSystem
@@ -109,3 +110,25 @@ suite "CommonFs.File - Path helpers":
     var path2 = "/home/user/.gitkeep".Path
     var handle2 = fs.getFileHandle(path2)
     check handle2.filename == ".gitkeep"
+
+  test "parent should return the parent directory":
+    const testCases = [
+      ("/tmp/somewhere/there", "/tmp/somewhere"),
+      ("/home/user/manifesto.pdf", "/home/user"),
+      ("/dev/projects/secret/.gitignore", "/dev/projects/secret"),
+      ("/some/other/path/", "/some/other")
+    ]
+
+    for testCase in testCases:
+      let path = testCase[0].Path
+      let parentPath = testCase[1].Path
+      let handle = fs.getFileHandle path
+      let parentOpt = handle.parent
+      check parentOpt.isSome == true
+      check parentOpt.get.absolutePath == parentPath
+
+  test "parent should return None for root directory":
+    let path = "/".Path
+    let handle = fs.getFileHandle path
+    let parentOpt = handle.parent
+    check parentOpt.isNone
