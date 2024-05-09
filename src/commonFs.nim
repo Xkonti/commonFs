@@ -117,11 +117,20 @@ proc removeFile*(self: FileSystem, path: Path) = ## \
 method readAllImpl(self: FileSystem, absolutePath: Path): string {.base, raises: [LibraryError, FileSystemError].} =
   raise newException(LibraryError, "Method readAll hasn't been implemented!")
 
-proc readAll*(self: FileSystem, path: Path): string = ## \
+proc readAll*(self: FileSystem, path: Path): string =
   ## Reads the content of the file at the specified path and returns it as a string.
   ## If the file does not exist, it raises the FileSystemError.
   let absolutePath = self.getAbsolutePathTo(path)
   self.readAllImpl(absolutePath)
+
+method readBytesImpl(self: FileSystem, absolutePath: Path): seq[byte] {.base, raises: [LibraryError, FileSystemError].} =
+  raise newException(LibraryError, "Method readBytes hasn't been implemented!")
+
+proc readBytes*(self: FileSystem, path: Path): seq[byte] =
+  ## Reads the content of the file at the specified path and returns it as a sequence of bytes.
+  ## If the file does not exist, it raises the FileSystemError.
+  let absolutePath = self.getAbsolutePathTo(path)
+  self.readBytesImpl(absolutePath)
 
 method writeImpl(self: FileSystem, absolutePath: Path, content: varargs[string, `$`]) {.base, raises: [LibraryError, FileSystemError].} =
   raise newException(LibraryError, "Method write hasn't been implemented!")
@@ -199,10 +208,15 @@ proc remove*(self: File) {.inline.} = ## \
   ## Removes the file. It does not raise an error if the file does not exist.
   self.fs.removeFile(self.absolutePath)
 
-proc readAll*(self: File): string = ## \
+proc readAll*(self: File): string =
   ## Reads the content of the file and returns it as a string.
   ## If the file does not exist, it raises the FileSystemError.
   self.fs.readAll(self.absolutePath)
+
+proc readBytes*(self: File): seq[byte] =
+  ## Reads the content of the file and returns it as a sequence of bytes.
+  ## If the file does not exist, it raises the FileSystemError.
+  self.fs.readBytes(self.absolutePath)
 
 proc write*(self: File, content: varargs[string, `$`]) = ## \
   ## Writes the provided content to the file .

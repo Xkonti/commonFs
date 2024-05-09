@@ -42,9 +42,11 @@ CommonFs is a file system abstraction for Nim that allows implementing interchan
 - [ ] `proc getFileSize`
 
 - [x] `proc readAll: string`
-- [ ] `proc readBytes: int` takes an `openArray[byte]`
+- [x] `proc readBytes: seq[byte]`
+- [ ] `proc readBytes(path, var buffer, start, len): int`
 - [x] `proc write` takes a varargs of strings (like `echo`)
-- [ ] `proc writeBytes` takes an `openArray[byte]`
+- [ ] `proc writeBytes(seq[byte])`
+- [ ] `proc writeBytes(path, buffer, start): int`
 
 - [ ] `File` type
     - [x] `proc parent: Dir`
@@ -59,7 +61,8 @@ CommonFs is a file system abstraction for Nim that allows implementing interchan
     - [ ] `proc lastAccessTime: Time`
     - [ ] `proc creationTime: Time`
     - [x] `proc readAll: string`
-    - [ ] `proc readBytes: int` takes an `openArray[byte]`
+    - [x] `proc readBytes: seq[byte]`
+    - [ ] `proc readBytes(path, var buffer, start, len): int`
     - [x] `proc write` takes a varargs of strings (like `echo`)
     - [ ] `proc writeBytes` takes an `openArray[byte]`
 
