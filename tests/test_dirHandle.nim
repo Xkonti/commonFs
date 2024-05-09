@@ -57,7 +57,8 @@ suite "CommonFs.Dir - Path helpers":
       ("/tmp/somewhere/there", "/tmp/somewhere"),
       ("/home/user/manifesto.pdf", "/home/user"),
       ("/dev/projects/secret/.gitignore", "/dev/projects/secret"),
-      ("/some/other/path/", "/some/other")
+      ("/some/other/path/", "/some/other"),
+      ("/bin", "/")
     ]
 
     for testCase in testCases:

@@ -116,7 +116,8 @@ suite "CommonFs.File - Path helpers":
       ("/tmp/somewhere/there", "/tmp/somewhere"),
       ("/home/user/manifesto.pdf", "/home/user"),
       ("/dev/projects/secret/.gitignore", "/dev/projects/secret"),
-      ("/some/other/path/", "/some/other")
+      ("/some/other/path/", "/some/other"),
+      ("/home", "/"),
     ]
 
     for testCase in testCases:

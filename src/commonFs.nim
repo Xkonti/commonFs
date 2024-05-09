@@ -145,6 +145,8 @@ proc absolutePath*(self: Dir | File): Path {.inline.} = ## \
   return self.absolutePath
 
 proc parent*(self: Dir | File): Option[Dir] =
+  ## Returns the parent directory of the directory or file.
+  ## If the provided path is the root directory, it returns none.
   let path = self.absolutePath
   if path.isRootDir:
     return none Dir
