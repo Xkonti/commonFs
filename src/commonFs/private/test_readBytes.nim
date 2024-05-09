@@ -20,12 +20,10 @@ proc verifyReadBytesImpl*(fsConstructor: () -> FileSystem) =
     teardown:
       removeDir(testDirPath, false)
 
-    test "should read full contents of a file via absolute path":
+    test "should read full string contents of a file via absolute path":
       let pathRelative = "textFile1.txt".Path
       let pathAbsolute = testDirPath / pathRelative
       let text = "Hello, World!".toBytes
-
-      # TODO: Test reading binary files with zero-character
 
       writeFile(pathAbsolute.string, text)
 
@@ -33,7 +31,7 @@ proc verifyReadBytesImpl*(fsConstructor: () -> FileSystem) =
       let file = fs.getFileHandle pathAbsolute
       check file.readBytes() == text
 
-    test "should read full contents of a file via relative path":
+    test "should read full string contents of a file via relative path":
       let pathRelative = "textFile2.txt".Path
       let pathAbsolute = testDirPath / pathRelative
       let text = "Whatever. This doesn't matter!".toBytes
@@ -44,6 +42,22 @@ proc verifyReadBytesImpl*(fsConstructor: () -> FileSystem) =
       check fs.readBytes(pathRelative) == text
       let file = fs.getFileHandle pathRelative
       check file.readBytes() == text
+
+    test "should read full binary contents of a file":
+      let pathRelative = "binaryFile1.bin".Path
+      let pathAbsolute = testDirPath / pathRelative
+      var binary: seq[byte] = @[]
+      for i in 0..255:
+        binary.add i.byte
+      binary.add binary
+
+      writeFile(pathAbsolute.string, binary)
+
+      let readBytes = fs.readBytes(pathAbsolute)
+      check readBytes.len == binary.len
+      check readBytes == binary
+      let file = fs.getFileHandle pathAbsolute
+      check file.readBytes() == binary
 
     test "should return empty sequence for empty file":
       let pathRelative = "textFile3.txt".Path
