@@ -24,14 +24,14 @@ proc verifyWriteImpl*(fsConstructor: () -> FileSystem) =
       let file1 = fs.createFile(pathAbsolute1)
       check file1.exists
       fs.write(pathAbsolute1, content)
-      check file1.readAll == content
+      check file1.readString == content
 
       let pathRelative2 = "textFile1b.txt".Path
       let pathAbsolute2 = testDirPath / pathRelative2
       let file2 = fs.createFile(pathAbsolute2)
       check file2.exists
       file2.write(content)
-      check file2.readAll == content
+      check file2.readString == content
 
     test "should write to an existing file via relative path":
       let pathRelative1 = "textFile2a.txt".Path
@@ -42,13 +42,13 @@ proc verifyWriteImpl*(fsConstructor: () -> FileSystem) =
       check file1.exists
       fs.currentDir = testDirPath
       fs.write(pathRelative1, content)
-      check file1.readAll == content
+      check file1.readString == content
 
       let pathRelative2 = "textFile2b.txt".Path
       let file2 = fs.createFile(pathRelative2)
       check file2.exists
       file2.write(content)
-      check file2.readAll == content
+      check file2.readString == content
 
     test "should write to a new file":
       let pathRelative1 = "textFile3a.txt".Path
@@ -57,7 +57,7 @@ proc verifyWriteImpl*(fsConstructor: () -> FileSystem) =
       check not fs.fileExists pathAbsolute1
       fs.write(pathAbsolute1, content)
       check fs.fileExists pathAbsolute1
-      check fs.readAll(pathAbsolute1) == content
+      check fs.readString(pathAbsolute1) == content
 
       let pathRelative2 = "textFile3b.txt".Path
       let pathAbsolute2 = testDirPath / pathRelative2
@@ -65,7 +65,7 @@ proc verifyWriteImpl*(fsConstructor: () -> FileSystem) =
       check not file.exists
       file.write(content)
       check file.exists
-      check file.readAll == content
+      check file.readString == content
 
     test "should allow writing mulitple elements":
       let pathRelative1 = "textFile4a.txt".Path
@@ -80,13 +80,13 @@ proc verifyWriteImpl*(fsConstructor: () -> FileSystem) =
       check file1.exists
       fs.currentDir = testDirPath
       fs.write(pathRelative1, content1, content2, content3, content4)
-      check file1.readAll == content
+      check file1.readString == content
 
       let pathRelative2 = "textFile4b.txt".Path
       let file2 = fs.createFile(pathRelative2)
       check file2.exists
       file2.write(content1, content2, content3, content4)
-      check file2.readAll == content
+      check file2.readString == content
 
     test "should throw an error when writing to a directory":
       let pathRelative = "textFile5.txt".Path
@@ -107,7 +107,7 @@ proc verifyWriteImpl*(fsConstructor: () -> FileSystem) =
       check not fs.fileExists pathAbsolute1
       fs.write(pathAbsolute1, "")
       check fs.fileExists pathAbsolute1
-      check fs.readAll(pathAbsolute1) == ""
+      check fs.readString(pathAbsolute1) == ""
 
       let pathRelative2 = "textFile6b.txt".Path
       let pathAbsolute2 = testDirPath / pathRelative2
@@ -115,16 +115,16 @@ proc verifyWriteImpl*(fsConstructor: () -> FileSystem) =
       check not file.exists
       file.write("", "", "", "")
       check file.exists
-      check file.readAll == ""
+      check file.readString == ""
 
     test "should overwrite instead of appending":
       let pathRelative = "textFile7.txt".Path
       let pathAbsolute = testDirPath / pathRelative
       
       fs.write(pathAbsolute, "Hello ", "there!")
-      check fs.readAll(pathAbsolute) == "Hello there!"
+      check fs.readString(pathAbsolute) == "Hello there!"
       let file = fs.getFileHandle(pathAbsolute)
       file.write("Goodbye ", "now!")
-      check file.readAll == "Goodbye now!"
+      check file.readString == "Goodbye now!"
       file.write("Wololo")
-      check file.readAll == "Wololo"
+      check file.readString == "Wololo"

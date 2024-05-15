@@ -40,7 +40,6 @@ proc verifyFileExistsImpl*(fsConstructor: () -> FileSystem) =
 
     test "should return false for non-existing file when checking for relative path":
       let pathRelative = "file4.pdf".Path
-      let pathAbsolute = testDirPath / pathRelative
       fs.currentDir = testDirPath
       check not fs.fileExists pathRelative
       let file = fs.getFileHandle pathRelative

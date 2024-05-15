@@ -40,13 +40,14 @@ CommonFs is a file system abstraction for Nim that allows implementing interchan
 - [ ] `proc getLastAccessTime`
 - [ ] `proc getCreationTime`
 - [ ] `proc getFileSize`
-
-- [x] `proc readAll: string`
-- [x] `proc readBytes: seq[byte]`
-- [ ] `proc readBytes(path, var buffer, start, len): int`
+- [x] `proc readString(path): string` - All file contents as a string
+- [x] `proc readString(path, start, length)` - Part of the file as a string
+- [x] `proc readStringIt(path, start, length)` - Iterator over buffer length
+- [x] `proc readBytes(path): seq[byte]` - All file contents as bytes
+- [ ] `proc readBytes(path, var buffer, start, len): int` - Part of the file as bytes
+- [ ] `proc readBytesIt(path, var buffer, start, len): int` - Iterator over buffer length
 - [x] `proc write` takes a varargs of strings (like `echo`)
-- [ ] `proc writeBytes(seq[byte])`
-- [ ] `proc writeBytes(path, buffer, start): int`
+- [ ] `proc writeBytes` takes an `openArray[byte]`
 
 - [ ] `File` type
     - [x] `proc parent: Dir`
@@ -60,9 +61,12 @@ CommonFs is a file system abstraction for Nim that allows implementing interchan
     - [ ] `proc lastModificationTime: Time`
     - [ ] `proc lastAccessTime: Time`
     - [ ] `proc creationTime: Time`
-    - [x] `proc readAll: string`
-    - [x] `proc readBytes: seq[byte]`
-    - [ ] `proc readBytes(path, var buffer, start, len): int`
+    - [x] `proc readString(): string` - All file contents as a string
+    - [ ] `proc readString(start, length)` - Part of the file as a string
+    - [ ] `proc readStringIt(start, length)` - Iterator over buffer length
+    - [x] `proc readBytes(): seq[byte]` - All file contents as bytes
+    - [ ] `proc readBytes(var buffer, start, len): int` - Part of the file as bytes
+    - [ ] `proc readBytesIt(var buffer, start, len): int` - Iterator over buffer length
     - [x] `proc write` takes a varargs of strings (like `echo`)
     - [ ] `proc writeBytes` takes an `openArray[byte]`
 

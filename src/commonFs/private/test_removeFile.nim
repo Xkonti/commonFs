@@ -31,7 +31,6 @@ proc verifyRemoveFileImpl*(fsConstructor: () -> FileSystem) =
 
     test "should remove a file using a relative path":
       let pathRelative = "testFile2.jpg".Path
-      let pathAbsolute = testDirPath / pathRelative
       fs.currentDir = testDirPath
       let file1 = fs.createFile pathRelative
       check file1.exists
