@@ -1,10 +1,13 @@
 import std/paths
 import std/options
 
-type
-  FileSystem* = ref object of RootObj
-    currentAbsoluteDir: Path = "/".Path
+import commonFs/private/errors
+export errors
 
+import commonFs/private/fileSystem
+export fileSystem
+
+type
   Dir* = ref object of RootObj
     fs: FileSystem
     absolutePath: Path
@@ -12,37 +15,6 @@ type
   File* = ref object of RootObj
     fs: FileSystem
     absolutePath: Path
-
-  FileSystemError* = object of CatchableError ## \
-    ## Raised if there is something wrong with the file system,
-    ## e.g. OS partition is no longer available, SFTP connection
-    ## can't be established, etc.
-  
-  InvalidPathError* = object of CatchableError ## \
-    ## Raised if the provided path is invalid, e.g. contains
-    ## forbidden characters, is too long, etc.
-
-#[
-  FILESYSTEM: CURRENT DIRECTORY OPERATIONS
-]#
-
-func currentDir*(self: FileSystem): Path = ## \
-  ## Returns the current "working" directory. The working directory is always an absolute path.
-  return self.currentAbsoluteDir
-
-proc `currentDir=`*(self: FileSystem, path: Path) = ## \
-  ## Sets the current "working" directory. If provided path is relative, it is resolved against the current directory.
-  try:
-    self.currentAbsoluteDir = path.absolutePath(self.currentAbsoluteDir)
-  except ValueError as e:
-      raise newException(InvalidPathError, e.msg, e)
-
-func getAbsolutePathTo*(self: FileSystem, path: Path): Path {.raises: [InvalidPathError].} = ## \
-  ## Returns the absolute path to the provided path. If the provided path is already absolute, it is returned as is.
-  try:
-    return path.absolutePath(self.currentDir)
-  except ValueError as e:
-      raise newException(InvalidPathError, e.msg, e)
 
 #[
   FILESYSTEM: DIRECTORY OPERATIONS
