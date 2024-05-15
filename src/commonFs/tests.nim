@@ -1,15 +1,15 @@
 import sugar
 import commonFs
 
-import private/test_dirExists
-import private/test_fileExists
-import private/test_createDir
-import private/test_createFile
-import private/test_removeDir
-import private/test_removeFile
-import private/test_readString
-import private/test_readBytes
-import private/test_write
+import private/tests/test_dirExists
+import private/tests/test_fileExists
+import private/tests/test_createDir
+import private/tests/test_createFile
+import private/tests/test_removeDir
+import private/tests/test_removeFile
+import private/tests/test_readString
+import private/tests/test_readBytes
+import private/tests/test_write
 
 proc verifyImplementation*(fsConstructor: () -> FileSystem) =
   verifyDirExistsImpl(fsConstructor)
