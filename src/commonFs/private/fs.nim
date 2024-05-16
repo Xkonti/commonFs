@@ -9,11 +9,11 @@ type
   CURRENT DIRECTORY OPERATIONS
 ]#
 
-func currentDir*(self: FileSystem): Path = ## \
+func currentDir*(self: FileSystem): Path =
   ## Returns the current "working" directory. The working directory is always an absolute path.
   return self.currentAbsoluteDir
 
-proc `currentDir=`*(self: FileSystem, path: Path) = ## \
+proc `currentDir=`*(self: FileSystem, path: Path) =
   ## Sets the current "working" directory. If provided path is relative, it is resolved against the current directory.
   try:
     self.currentAbsoluteDir = path.absolutePath(self.currentAbsoluteDir)
