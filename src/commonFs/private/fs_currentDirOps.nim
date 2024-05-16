@@ -1,14 +1,3 @@
-import std/paths
-import errors
-
-type
-  FileSystem* = ref object of RootObj
-    currentAbsoluteDir: Path = "/".Path
-
-#[
-  CURRENT DIRECTORY OPERATIONS
-]#
-
 func currentDir*(self: FileSystem): Path =
   ## Returns the current "working" directory. The working directory is always an absolute path.
   return self.currentAbsoluteDir

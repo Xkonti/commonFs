@@ -1,26 +1,22 @@
-import commonFs/private/errors
-export errors
+import std/paths
+import std/options
 
-import commonFs/private/fs
-export fs
+#[
+  BASE TYPES
+]#
+include commonFs/private/errors
+include commonFs/private/types
 
-import commonFs/private/dir
-export dir.Dir
+#[
+  [FILESYSTEM] OPERATIONS
+]#
+include commonFs/private/fs_currentDirOps
+include commonFs/private/fs_DirOps
+include commonFs/private/fs_FileOps
 
-import commonFs/private/file
-export file.File
-
-import commonFs/private/fsDirOps
-export fsDirOps
-
-import commonFs/private/fsFileOps
-export fsFileOps
-
-import commonFs/private/commonDirFileOps
-export commonDirFileOps
-
-import commonFs/private/dirOps
-export dirOps
-
-import commonFs/private/fileOps
-export fileOps
+#[
+  [DIR] and [FILE] OPERATIONS
+]#
+include commonFs/private/common_Ops
+include commonFs/private/dir_Ops
+include commonFs/private/file_Ops

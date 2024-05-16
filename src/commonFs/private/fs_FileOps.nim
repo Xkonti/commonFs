@@ -1,19 +1,13 @@
-import std/paths
-
-import errors
-import fs
-import file
-
-func getFileHandle*(self: FileSystem, path: Path): file.File =
+func getFileHandle*(self: FileSystem, path: Path): File =
   ## Returns a File object for the file at the specified path, even if such file does not exist.
   let absolutePath = path.absolutePath(self.currentDir)
-  result = priv_newFile(self, absolutePath)
+  result = File(fs: self, absolutePath: absolutePath)
 
 
-method createFileImpl(self: FileSystem, absolutePath: Path): file.File {.base, raises: [LibraryError, FileSystemError, InvalidPathError].} =
+method createFileImpl(self: FileSystem, absolutePath: Path): File {.base, raises: [LibraryError, FileSystemError, InvalidPathError].} =
   raise newException(LibraryError, "Method createFile hasn't been implemented!")
 
-proc createFile*(self: FileSystem, path: Path): file.File {.discardable.} = ## \
+proc createFile*(self: FileSystem, path: Path): File {.discardable.} =
   ## Creates an empty file at the specified path. It does not raise an error if the file already exists.
   ## If the directory in which the file should be created does not exist, it raises the FileSystemError.
   ## If succeeeded, it returns a File handle for the created file.
@@ -24,7 +18,7 @@ proc createFile*(self: FileSystem, path: Path): file.File {.discardable.} = ## \
 method fileExistsImpl(self: FileSystem, absolutePath: Path): bool {.base, raises: [LibraryError, FileSystemError].} =
   raise newException(LibraryError, "Method fileExists hasn't been implemented!")
 
-proc fileExists*(self: FileSystem, path: Path): bool = ## \
+proc fileExists*(self: FileSystem, path: Path): bool =
   ## Returns true if the file at the specified path exists. If the path points to a directory, it returns false.
   let absolutePath = self.getAbsolutePathTo(path)
   return self.fileExistsImpl(absolutePath)
@@ -33,7 +27,7 @@ proc fileExists*(self: FileSystem, path: Path): bool = ## \
 method removeFileImpl(self: FileSystem, absolutePath: Path) {.base, raises: [LibraryError, FileSystemError].} =
   raise newException(LibraryError, "Method removeFile hasn't been implemented!")
 
-proc removeFile*(self: FileSystem, path: Path) = ## \
+proc removeFile*(self: FileSystem, path: Path) =
   ## Removes the file at the specified path. It does not raise an error if the file does not exist.
   let absolutePath = self.getAbsolutePathTo(path)
   self.removeFileImpl(absolutePath)
