@@ -23,7 +23,6 @@ proc readString*(self: FileSystem, path: Path, buffer: var string, start: int64,
   let absolutePath = self.getAbsolutePathTo(path)
   self.readStringBufferImpl(absolutePath, buffer, start, length)
 
-# TODO: TEST
 proc readString*(self: File, buffer: var string, start: int64, length: int64): int =
   ## Reads the content of the file into the specified byte buffer starting at the specified index.
   ## Returns the number of characters read.
@@ -45,7 +44,6 @@ iterator readStringBuffered*(self: FileSystem, path: Path, buffer: var string, s
   for i in iter(buffer):
     yield i
 
-# TODO: TEST
 iterator readStringBuffered*(self: File, buffer: var string, start: int64, length: int64): int =
   ## Iterator that reads the content of the file buffer-by-buffer
   ## Returns the number of characters read while the data is available in the buffer.
