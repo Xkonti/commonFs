@@ -55,7 +55,7 @@ proc readString*(self: FileSystem, path: Path, buffer: var string, start: int64,
   let absolutePath = self.getAbsolutePathTo(path)
   self.readStringBufferImpl(absolutePath, buffer, start, length)
 
-type StringBufferedIterator* = iterator(self: FileSystem, absolutePath: Path, buffer: var string, start: int64, length: int64): int
+type StringBufferedIterator* = iterator(buffer: var string): int
 
 method getStringBufferedIteratorImpl(self: FileSystem, absolutePath: Path, buffer: var string, start: int64, length: int64): StringBufferedIterator {.base, raises: [LibraryError, FileSystemError].} =
   raise newException(LibraryError, "Method getStringBufferedIteratorImpl hasn't been implemented!")
@@ -66,7 +66,7 @@ iterator readStringBuffered*(self: FileSystem,  path: Path, buffer: var string, 
   ## If the file does not exist, it raises the FileSystemError.
   let absolutePath = self.getAbsolutePathTo(path)
   let iter = self.getStringBufferedIteratorImpl(absolutePath, buffer, start, length)
-  for i in iter(self, absolutePath, buffer, start, length):
+  for i in iter(buffer):
     yield i
 
 method readBytesImpl(self: FileSystem, absolutePath: Path): seq[byte] {.base, raises: [LibraryError, FileSystemError].} =
