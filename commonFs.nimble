@@ -19,3 +19,7 @@ task dev_uninstall, "Uninstall the package locally":
 task dev_install, "Reinstall the package locally":
   dev_uninstall_task()
   exec r"nimble install"
+
+task regen_docs, "Regenerate the documentation":
+  exec "nim doc --project --index:on --outdir:htmldocs src/commonFs.nim"
+  exec "python3 -m http.server 7029 --directory htmldocs"
